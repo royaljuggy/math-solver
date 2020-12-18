@@ -20,6 +20,8 @@ public class Main extends Application {
             @Override
             public void handle(ActionEvent event) {
                 System.out.println("Hello World!");
+                System.out.println(MathFunctions.factorial(4));
+                System.out.println(MathSolvers.linearDiophantine(3, 4, 5));
             }
         });
 
