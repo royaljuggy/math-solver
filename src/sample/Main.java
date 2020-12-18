@@ -17,6 +17,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.util.ArrayList;
 
+// The heart of our code, this class creates our GUI
 public class Main extends Application {
 
     private static int oneVarNumber = 0;

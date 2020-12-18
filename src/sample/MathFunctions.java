@@ -1,5 +1,6 @@
 package sample;
 
+// This class contains functions that produce a specific answer (nth factorial, nth Fibonacci number, etc.)
 public class MathFunctions {
 
     // Produces the factorial of the number n
