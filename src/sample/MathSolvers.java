@@ -14,14 +14,16 @@ public class MathSolvers {
         long[] tempR = new long[2];
         String output = "";
 
+        // Initializing our starting rows:
+        // > Row1: 1, 0, a, 0; Row2: 0, 1, b, 0
         tempX[0] = 1;
         tempX[1] = 0;
 
         tempY[0] = 0;
         tempY[1] = 1;
 
-        tempQ[0] = a;
-        tempQ[1] = b;
+        tempQ[0] = Math.abs(a); // We need a and b to be non-negative to use the Extended Euclidean Algorithm
+        tempQ[1] = Math.abs(b);
 
         tempR[0] = 0;
         tempR[1] = 0;
@@ -29,19 +31,23 @@ public class MathSolvers {
         long[] solution = certificateOfCorrectness(tempX, tempY, tempQ, tempR);
 
         if (c % solution[2] == 0) { // We note that integer solutions of (x,y) to the equation ax+by=c exist if and only if gcd(a,b) divides c.
-            output = "One solution to " + a + "x+" + b + "y=" + c + " is x = " + (solution[0] * c) + " y = " + (solution[1] * c);
+            output = "One solution to " + a + "x+" + b + "y=" + c + " is x = " + (solution[0] * c * (a/Math.abs(a))) + " y = " + (solution[1] * c * (b/Math.abs(b)));
         } else {
             output = "This particular linear Diophantine equation has no x,y integer solutions.";
         }
-        System.out.println("Programmer's note: Need to handle negative input cases separately.");
+
         return output;
     }
 
     // Gives a particular solution to the linear Diophantine Equation (ax + by = gcd(a, b)) using the Extended Euclidean Algorithm
     // > We call this solution the certificate of correctness.
     // * Input: Size 2 Integer Arrays x, y, q, r, where the first element represents the i-2 row, and the second element represents the i-1row
+    // Example input: Row1: 1, 0, a, 0; Row2: 0, 1, b, 0
+    // ** > Requires: a,b are non-negative integers
     // * Output: Integer array, where the first element is the x solution, and the second element is the y solution
-    public static long[] certificateOfCorrectness(long[] x, long[] y, long[] q, long[] r) {
+    private static long[] certificateOfCorrectness(long[] x, long[] y, long[] q, long[] r) {
+
+        // Recursive Base Case
         if (q[1] == 0) {
             long[] temp = new long[3];
             // x,y are your particular solution, q is your GCD of (a, b)
