@@ -7,7 +7,7 @@ public class MathSolvers {
     // * Input: Integers a, b, c
     // * Output: String of the set of solutions
     public static String linearDiophantine(long a, long b, long c) {
-        // Temporary values to send into linearDiophantineSolver method/output
+        // Temporary values to send into linearDiophantineSolver method
         long[] tempX = new long[2];
         long[] tempY = new long[2];
         long[] tempQ = new long[2];
@@ -31,7 +31,8 @@ public class MathSolvers {
         long[] solution = certificateOfCorrectness(tempX, tempY, tempQ, tempR);
 
         if (c % solution[2] == 0) { // We note that integer solutions of (x,y) to the equation ax+by=c exist if and only if gcd(a,b) divides c.
-            output = "One solution to " + a + "x+" + b + "y=" + c + " is x = " + (solution[0] * c * (a/Math.abs(a))) + " y = " + (solution[1] * c * (b/Math.abs(b)));
+            output = "One solution to " + a + "x+" + b + "y=" + c + " is x = " +
+                    (solution[0] * c * (a/Math.abs(a))) + " y = " + (solution[1] * c * (b/Math.abs(b)));
         } else {
             output = "This particular linear Diophantine equation has no x,y integer solutions.";
         }
