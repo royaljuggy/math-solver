@@ -14,12 +14,17 @@ import javafx.scene.layout.GridPane;
 
 import java.util.ArrayList;
 
-public class OneVariableTab implements Tabs {
+public class OneVariableTab extends Tabs {
 
     private long oneVarNumber;
+    private Tab oneVarFuncTab;
+    private GridPane grid;
 
     public OneVariableTab() {
         oneVarNumber = 0;
+        oneVarFuncTab = new Tab("One Variable");
+        grid = new GridPane();
+        init();
     }
 
     /**
@@ -27,18 +32,15 @@ public class OneVariableTab implements Tabs {
      * > This tab applies functions to a single natural number input
      * @return A <code> Tab </code> representing the One Variable tab
      */
-    public Tab init() {
+    public void init() {
         // Initializing our objects for the tab
-        // > Tab
-        Tab oneVarFuncTab = new Tab("One Variable Function");
 
-        // > Pane node
-        GridPane grid = new GridPane();
+        // Grid pane node
         grid.setHgap(10);
         grid.setVgap(10);
         grid.setPadding(new Insets(0, 10, 0, 10));
 
-        // > Visuals/User interaction objects
+        // Visuals/User interaction objects
         TextField numberInput = new TextField("Input a natural number here!");
         numberInput.setFocusTraversable(false);
         TextArea textDisplay = new TextArea("Your output here.");
@@ -48,7 +50,7 @@ public class OneVariableTab implements Tabs {
         Button btnFib = new Button("Calculate nth Fibonacci number!");
 
 
-        //  Adding functionality to our objects
+        // Adding functionality to our objects
 
         // Textfield functionality
         numberInput.setOnKeyPressed(ke -> { // pressing enter on the textfield saves the number it gave us
@@ -104,7 +106,6 @@ public class OneVariableTab implements Tabs {
 
         oneVarFuncTab.setContent(grid);
 
-        return oneVarFuncTab;
     }
 
     /**
@@ -144,6 +145,14 @@ public class OneVariableTab implements Tabs {
                     "\nFor now, n = 0.");
             oneVarNumber = 0;
         }
+    }
+
+    /**
+     * Accessor method for Tab field
+     * @return this object's Tab node
+     */
+    public Tab getTab() {
+        return this.oneVarFuncTab;
     }
 
 }
