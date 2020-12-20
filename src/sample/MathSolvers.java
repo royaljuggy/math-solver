@@ -1,5 +1,6 @@
 package sample;
 
+// This class contains functions that solve some mathematical equation (Linear Diophantine equations, etc.)
 public class MathSolvers {
 
     // Produces a set of integer solutions to the equation ax + by = c (where a,b,c are constant coefficients with a, b non-zero)

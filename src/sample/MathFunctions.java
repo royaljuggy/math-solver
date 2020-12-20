@@ -1,13 +1,21 @@
 package sample;
 
+// This class contains functions that produce a specific answer (nth factorial, nth Fibonacci number, etc.)
 public class MathFunctions {
 
     // Produces the factorial of the number n
     // * Input: Natural Number 'n'
     // * Output: n!
-    public static long factorial (long n) {
+    public static long factorial(long n) {
         if (n == 0) return 1;
         else return n * factorial(--n);
+    }
+
+    // Produces a string message of the factorial of the number n
+    // * Input: Natural Number 'n'
+    // * Output: String, the message indicating factorial
+    public static String factorialString(long n) {
+        return "The factorial of n = " + n + " is " + factorial(n);
     }
 
     // Wrapper function for fibonacci number function
@@ -15,6 +23,13 @@ public class MathFunctions {
     // * Output: nth fibonacci number
     public static long fibonacci(long n) {
         return produceFibonacciNumber(0, 1, n);
+    }
+
+    // Produces a string message of the nth Fibonacci number
+    // * Input: Natural Number 'n'
+    // * Output: String, the message indicating the nth Fibonacci number
+    public static String fibonacciString(long n) {
+        return "The n = " + n + " Fibonacci number is " + fibonacci(n);
     }
 
     // Produces the nth fibonacci number

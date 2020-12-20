@@ -4,22 +4,21 @@ import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
+import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Tab;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
-import javafx.scene.control.TabPane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.util.ArrayList;
 
+// The heart of our code, this class creates our GUI
 public class Main extends Application {
 
-    private static int oneVarNumber = 0;
+    private static long oneVarNumber = 0;
 
     @Override
     public void start(Stage primaryStage) throws IOException  {
@@ -54,6 +53,7 @@ public class Main extends Application {
 
         allTabs.add(initOneVarTab());
         allTabs.add(initTwoVarSolverTab());
+        allTabs.add(initSupportTab());
 
         // Adding all tabs in allTabs to the root pane, while also adding properties that all tabs hold (like how they are ALL not closable)
         for (Tab t : allTabs) {
@@ -79,9 +79,12 @@ public class Main extends Application {
 
         // > Visuals/User interaction objects
         TextField numberInput = new TextField("Input a natural number here!");
+        TextArea textDisplay = new TextArea("Your output here.");
+        textDisplay.setEditable(false);
 
         Button btnFactorial = new Button("Factorialize it!");
         Button btnFib = new Button("Calculate nth Fibonacci number!");
+
 
         //  Adding functionality to our objects
 
@@ -90,16 +93,11 @@ public class Main extends Application {
 
             KeyCode keyCode = ke.getCode();
             if (keyCode.equals(KeyCode.ENTER)) {
-                try {
-                    oneVarNumber = Integer.valueOf(numberInput.getText());
-                } catch (NumberFormatException nfe) {
-                    oneVarNumber = 1;
-                    System.out.println("alert here");
-                }
-
+                oneVarNumber = getTextFieldNumber(numberInput);
             }
 
         });
+
         // Textfield functionality
         numberInput.setOnMouseClicked((MouseEvent me) -> { // clears previous text in box upon focus of textfield
 
@@ -113,8 +111,8 @@ public class Main extends Application {
 
             @Override
             public void handle(ActionEvent event) {
-                oneVarNumber = Integer.valueOf(numberInput.getText()); // repeated code!! We want to be DRY!
-                System.out.println(MathFunctions.factorial(oneVarNumber));
+                oneVarNumber = getTextFieldNumber(numberInput);
+                textDisplay.setText(MathFunctions.factorialString(oneVarNumber));
             }
 
         });
@@ -124,19 +122,36 @@ public class Main extends Application {
 
             @Override
             public void handle(ActionEvent event) {
-                oneVarNumber = Integer.valueOf(numberInput.getText()); // repeated code!! We want to be DRY!
-                System.out.println(MathFunctions.fibonacci(oneVarNumber));
+                oneVarNumber = getTextFieldNumber(numberInput);
+                textDisplay.setText(MathFunctions.fibonacciString(oneVarNumber));
             }
 
         });
 
-        grid.add(numberInput, 1, 1);
-        grid.add(btnFactorial, 1, 2);
-        grid.add(btnFib, 1, 3);
+        // Adding visual nodes to the grid pane
+        ArrayList<Node> objectsToAdd = new ArrayList<>();
+        objectsToAdd.add(numberInput);
+        objectsToAdd.add(btnFactorial);
+        objectsToAdd.add(btnFib);
+        objectsToAdd.add(textDisplay);
+
+        int columnIndex = 1;
+        for (int x = 0; x < objectsToAdd.size(); x++) {
+            grid.add(objectsToAdd.get(x), columnIndex, (x + 1));
+        }
 
         oneVarFuncTab.setContent(grid);
 
         return oneVarFuncTab;
+    }
+
+    private static long getTextFieldNumber(TextField tf) {
+        try {
+            return Long.valueOf(tf.getText());
+        } catch (NumberFormatException nfe) {
+            // alert here
+            return 1;
+        }
     }
 
     // Second Tab: two variable solvers (finding solutions of equations in two variables)
@@ -152,6 +167,18 @@ public class Main extends Application {
         return twoVarSolverTab;
     }
 
+    // Third Tab: Support tab (what this app does, what the output means, etc.)
+    private static Tab initSupportTab() {
+        // Tab
+        Tab supportTab = new Tab("Help");
+
+        // > Pane node
+        GridPane grid = new GridPane();
+        grid.setHgap(10);
+        grid.setVgap(10);
+        grid.setPadding(new Insets(0, 10, 0, 10));
+        return supportTab;
+    }
     public static void main(String[] args) {
         launch(args);
     }
