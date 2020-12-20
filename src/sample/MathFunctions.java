@@ -1,5 +1,7 @@
 package sample;
 
+import javafx.application.Application;
+
 // This class contains functions that produce a specific answer (nth factorial, nth Fibonacci number, etc.)
 public class MathFunctions {
 
