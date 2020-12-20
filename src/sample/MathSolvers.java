@@ -2,11 +2,14 @@ package sample;
 
 // This class contains functions that solve some mathematical equation (Linear Diophantine equations, etc.)
 public class MathSolvers {
-
-    // Produces a set of integer solutions to the equation ax + by = c (where a,b,c are constant coefficients with a, b non-zero)
-    // If no solutions exist, produce the empty array
-    // * Input: Integers a, b, c
-    // * Output: String of the set of solutions
+    
+    /**
+     * Produces a string indicating the integer solutions of x,y to the equation ax+by=c (for integer constants a,b,c)
+     * @param a a constant of ax+by=c
+     * @param b a constant of ax+by=c
+     * @param c a constant of ax+by=c
+     * @return A string to indicate integer solutions x,y
+     */
     public static String linearDiophantine(long a, long b, long c) {
         // Temporary values to send into linearDiophantineSolver method
         long[] tempX = new long[2];
@@ -41,12 +44,17 @@ public class MathSolvers {
         return output;
     }
 
-    // Gives a particular solution to the linear Diophantine Equation (ax + by = gcd(a, b)) using the Extended Euclidean Algorithm
-    // > We call this solution the certificate of correctness.
-    // * Input: Size 2 Integer Arrays x, y, q, r, where the first element represents the i-2 row, and the second element represents the i-1row
-    // Example input: Row1: 1, 0, a, 0; Row2: 0, 1, b, 0
-    // ** > Requires: a,b are non-negative integers
-    // * Output: Integer array, where the first element is the x solution, and the second element is the y solution
+    /**
+     * Gives a particular solution to the linear Diophantine Equation (ax + by = gcd(a, b)) using the Extended Euclidean Algorithm
+     *      > We call this solution the certificate of correctness.
+     *      * Input: Size 2 Integer Arrays x, y, q, r, where the first element represents the i-2 row, and the second element represents the i-1row
+     *      Example input: Row1: 1, 0, a, 0; Row2: 0, 1, b, 0
+     * @param x two rows of the x column in the Extended Euclidean Algorithm table
+     * @param y two rows of the y column in the Extended Euclidean Algorithm table
+     * @param q two rows of the q column in the Extended Euclidean Algorithm table
+     * @param r two rows of the r column in the Extended Euclidean Algorithm table
+     * @return A long array, where the first element is the x solution, the second is the y solution, and the third is the greatest common divisor of a and b
+     */
     private static long[] certificateOfCorrectness(long[] x, long[] y, long[] q, long[] r) {
 
         // Recursive Base Case

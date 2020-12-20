@@ -16,9 +16,17 @@ import java.util.ArrayList;
 
 public class OneVariableTab implements Tabs {
 
-    private long oneVarNumber = 0;
+    private long oneVarNumber;
 
-    // First Tab: One variable function
+    public OneVariableTab() {
+        oneVarNumber = 0;
+    }
+
+    /**
+     * Creates the visuals and functionality of the One Variable Tab
+     * > This tab applies functions to a single natural number input
+     * @return A <code> Tab </code> representing the One Variable tab
+     */
     public Tab init() {
         // Initializing our objects for the tab
         // > Tab
@@ -47,7 +55,7 @@ public class OneVariableTab implements Tabs {
 
             KeyCode keyCode = ke.getCode();
             if (keyCode.equals(KeyCode.ENTER)) {
-                oneVarNumber = getTextFieldNumber(numberInput);
+                setTextFieldNumber(numberInput);
             }
 
         });
@@ -65,7 +73,7 @@ public class OneVariableTab implements Tabs {
 
             @Override
             public void handle(ActionEvent event) {
-                oneVarNumber = getTextFieldNumber(numberInput);
+                setTextFieldNumber(numberInput);
                 textDisplay.setText(MathFunctions.factorialString(oneVarNumber));
             }
 
@@ -76,7 +84,7 @@ public class OneVariableTab implements Tabs {
 
             @Override
             public void handle(ActionEvent event) {
-                oneVarNumber = getTextFieldNumber(numberInput);
+                setTextFieldNumber(numberInput);
                 textDisplay.setText(MathFunctions.fibonacciString(oneVarNumber));
             }
 
@@ -99,16 +107,43 @@ public class OneVariableTab implements Tabs {
         return oneVarFuncTab;
     }
 
-    // Sets the number for the one variable tab
-    // * Input: TextField
-    // * Output: Non-negative integer
+    /**
+     * Gets the number from a TextField
+     * @param tf The TextField FX object to pull a number from
+     * @return A <code> non-negative Integer </code>, the number to apply One Variable functions to
+     */
     private long getTextFieldNumber(TextField tf) {
         try {
-            return Long.valueOf(tf.getText());
+            long temp = Long.valueOf(tf.getText());
+            if (temp < 0) {
+                throw new NumberFormatException("Input Mismatch Error");
+            }
+
+            return temp;
         } catch (NumberFormatException nfe) {
             Main.alert("Please input a natural number (an non-negative integer). " +
                     "\nFor now, n = 0.");
             return 0;
         }
     }
+
+    /**
+     * Sets the value of oneVarNumber (the number to apply functions to)
+     * @param tf The TextField FX object to pull a number from
+     */
+    private void setTextFieldNumber(TextField tf) {
+        try {
+            long temp = Long.valueOf(tf.getText());
+            if (temp < 0) {
+                throw new NumberFormatException("Input Mismatch Error");
+            }
+
+            oneVarNumber = temp;
+        } catch (NumberFormatException nfe) {
+            Main.alert("Please input a natural number (an non-negative integer). " +
+                    "\nFor now, n = 0.");
+            oneVarNumber = 0;
+        }
+    }
+
 }
