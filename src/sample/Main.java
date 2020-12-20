@@ -1,15 +1,8 @@
 package sample;
 
 import javafx.application.Application;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.geometry.Insets;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -32,19 +25,22 @@ public class Main extends Application {
         //Parent root2 = FXMLLoader.load(getClass().getResource("sample.fxml"));
     }
 
-    // A function to initialize the tabs of our TabPane
+    /**
+     * A function to initialize the tabs of our TabPane
+     * @return A <code> TabPane </code> containing all of the Tabs (with their functionality) of the application
+     */
     private static TabPane initTabs() {
         TabPane root = new TabPane();
         ArrayList<Tab> allTabs = new ArrayList<>();
 
         // Tab objects (not JavaFX tabs)
         OneVariableTab oneVarTab = new OneVariableTab();
-        TwoVariableTab twoVarTab = new TwoVariableTab();
+        SolverTab solverTab = new SolverTab();
         SupportTab supportTab = new SupportTab();
 
         // Initializing the Tab nodes and storing them (JavaFX tabs)
         allTabs.add(oneVarTab.init());
-        allTabs.add(twoVarTab.init());
+        allTabs.add(solverTab.init());
         allTabs.add(supportTab.init());
 
         // Adding all tabs in allTabs to the root pane, while also adding properties that all tabs hold (like how they are ALL not closable)
@@ -58,6 +54,10 @@ public class Main extends Application {
     }
 
     // A reusable pop-up alert system
+    /**
+     * Pop-up alert system
+     * @param message A string representing the alert message
+     */
     public static void alert(String message) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle(title);

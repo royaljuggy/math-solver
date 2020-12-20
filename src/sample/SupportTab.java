@@ -6,7 +6,11 @@ import javafx.scene.layout.GridPane;
 
 public class SupportTab implements Tabs {
 
-    // Support tab (what this app does, what the output means, etc.)
+    /**
+     * Creates the visuals and functionality of the support tab
+     * > This tab gives information to first time users on function and solver usage
+     * @return A <code> Tab </code> representing the Support Tab
+     */
     public Tab init() {
         Tab supportTab = new Tab("Help");
 

@@ -5,48 +5,63 @@ import javafx.application.Application;
 // This class contains functions that produce a specific answer (nth factorial, nth Fibonacci number, etc.)
 public class MathFunctions {
 
-    // Produces the factorial of the number n
-    // * Input: Natural Number 'n'
-    // * Output: n!
+    /**
+     * Produces the factorial of n
+     * @param n a non-negative integer to apply the factorial to
+     * @return The factorial of parameter n, also known as: n!
+     */
     public static long factorial(long n) {
         if (n == 0) return 1;
         else return n * factorial(--n);
     }
 
-    // Produces a string message of the factorial of the number n
-    // * Input: Natural Number 'n'
-    // * Output: String, the message indicating factorial
+    /**
+     * Produces a string message indicating the factorial of n
+     * @param n a non-negative integer to apply the factorial to
+     * @return A string message of the factorial of parameter n
+     */
     public static String factorialString(long n) {
         return "The factorial of n = " + n + " is " + factorial(n);
     }
 
-    // Wrapper function for fibonacci number function
-    // * Input: Natural Number 'n'
-    // * Output: nth fibonacci number
+    /**
+     * Produces the nth Fibonacci number
+     * @param n a non-negative integer to find the nth Fibonacci number
+     * @return The nth Fibonacci number
+     */
     public static long fibonacci(long n) {
         return produceFibonacciNumber(0, 1, n);
     }
 
-    // Produces a string message of the nth Fibonacci number
-    // * Input: Natural Number 'n'
-    // * Output: String, the message indicating the nth Fibonacci number
+    /**
+     * Produces a string message indicating the nth Fibonacci number
+     * @param n a non-negative integer to find the nth Fibonacci number
+     * @return A string message of the nth Fibonacci number
+     */
     public static String fibonacciString(long n) {
         return "The n = " + n + " Fibonacci number is " + fibonacci(n);
     }
 
-    // Produces the nth fibonacci number
-    // * Input: Natural Numbers n0, n1, n, where:
-    //          n0, n1 are the first two Fibonacci numbers.
-    //          n is the nth Fibonacci number to produce
-    // * Output: nth fibonacci number
-    private static long produceFibonacciNumber(long n0, long n1, long n) {
-        if (n == 0)  return n0;
-        else return produceFibonacciNumber(n1, (n0 + n1), --n);
+    /**
+     * Produces the nth Fibonacci number, starting at the first two Fibonacci numbers
+     * @param n_i the first of a pair of Fibonacci numbers
+     * @param n_i1 the second of a pair of Fibonacci numbers
+     * @param n a natural number indicating the nth Fibonacci number to produce
+     * > Parameter requirements: n_i, n_i1 start at 0, 1 the 0th and 1st Fibonacci numbers (we are using simple recursion to produce values)
+     *                           n is non-negative
+     * @return The nth Fibonacci number
+     */
+    private static long produceFibonacciNumber(long n_i, long n_i1, long n) {
+        if (n == 0)  return n_i;
+        else return produceFibonacciNumber(n_i1, (n_i + n_i1), --n);
     }
 
-    // Produces the greatest common divisor of two integers
-    // * Input: Integers 'a', 'b'
-    // * Output: The greatest common divisor of a, b, using the Euclidean method
+    /**
+     * Produces the greatest common divisor of two integers using the Euclidean method
+     * @param a any integer
+     * @param b any integer
+     * @return The greatest common divisor of a and b
+     */
     public static long gcd(long a, long b) {
         if (a == 0) {
             return b;
