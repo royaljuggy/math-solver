@@ -31,21 +31,16 @@ public class Main extends Application {
      */
     private static TabPane initTabs() {
         TabPane root = new TabPane();
-        ArrayList<Tab> allTabs = new ArrayList<>();
+        ArrayList<Tabs> allTabs = new ArrayList<>();
 
-        // Tab objects (not JavaFX tabs)
-        OneVariableTab oneVarTab = new OneVariableTab();
-        SolverTab solverTab = new SolverTab();
-        SupportTab supportTab = new SupportTab();
+        // Initializing the Tab nodes and storing them (not to be mistaken with JavaFX tabs)
+        allTabs.add(new OneVariableTab());
+        allTabs.add(new SolverTab());
+        allTabs.add(new SupportTab());
 
-        // Initializing the Tab nodes and storing them (JavaFX tabs)
-        allTabs.add(oneVarTab.init());
-        allTabs.add(solverTab.init());
-        allTabs.add(supportTab.init());
-
-        // Adding all tabs in allTabs to the root pane, while also adding properties that all tabs hold (like how they are ALL not closable)
-        for (Tab t : allTabs) {
-            Tab temp = t;
+        // Adding the tabs in allTabs to the root pane, while also adding properties that all tabs hold (like how they are ALL not closable)
+        for (Tabs t : allTabs) {
+            Tab temp = t.getTab();
             temp.setClosable(false);
             root.getTabs().add(temp);
         }
@@ -65,6 +60,7 @@ public class Main extends Application {
         alert.setContentText(message);
         alert.show();
     }
+
     public static void main(String[] args) {
         launch(args);
     }

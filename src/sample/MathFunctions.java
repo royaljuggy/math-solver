@@ -47,7 +47,7 @@ public class MathFunctions {
      * @param n_i the first of a pair of Fibonacci numbers
      * @param n_i1 the second of a pair of Fibonacci numbers
      * @param n a natural number indicating the nth Fibonacci number to produce
-     * > Parameter requirements: n_i, n_i1 start at 0, 1 the 0th and 1st Fibonacci numbers (we are using simple recursion to produce values)
+     * > Parameter requirements: n_i, n_i1 start at 0, 1, the 0th and 1st Fibonacci numbers (we are using simple recursion to produce values)
      *                           n is non-negative
      * @return The nth Fibonacci number
      */
