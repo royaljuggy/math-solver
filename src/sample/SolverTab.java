@@ -14,6 +14,7 @@ public class SolverTab extends Tabs {
     // [Fields] Variables used in the Two Variable Tab
     private long var1;
     private long var2;
+    private long var3;
     private Tab solverTab;
     private GridPane baseGrid;
     private ComboBox functionChooser; // ComboBox to choose which function's nodes to show (only one set of nodes are shown at a time)
@@ -25,6 +26,7 @@ public class SolverTab extends Tabs {
     public SolverTab() {
         var1 = 0;
         var2 = 0;
+        var3 = 0; // a third constant needed for linear diophantine equations
         solverTab = new Tab("Two Variables");
         baseGrid = new GridPane();
         functionChooser = new ComboBox<String>();
@@ -150,19 +152,16 @@ public class SolverTab extends Tabs {
         ArrayList<Node> nodesOfChoice1 = new ArrayList<>();
 
         // Visual nodes to add
-        TextField inputNumber1 = new TextField("Input Number 1");
-        TextField inputNumber2 = new TextField("Input Number 2");
-        Button btnCalculateGCD = new Button("Calculate GCD of numbers 1 and 2");
+        TextField inputNumber1 = new TextField("Input number 'a'");
+        TextField inputNumber2 = new TextField("Input number 'b'");
+        TextField inputNumber3 = new TextField("Input number 'c'");
 
-        // inputNumber1 functionality
-        inputNumber1.setOnKeyPressed(ke -> { // pressing enter on the textfield saves the number it gave us
+        TextArea textOutput = new TextArea("Answer here.");
+        textOutput.setEditable(false);
+        textOutput.setPrefSize(prefWidth, prefHeight);
 
-            KeyCode keyCode = ke.getCode();
-            if (keyCode.equals(KeyCode.ENTER)) {
-                setVar1(inputNumber1.getText());
-            }
+        Button btnSolveLDE = new Button("Solve the LDE ax+by=c");
 
-        });
 
         // inputNumber1 functionality
         inputNumber1.setOnMouseClicked((MouseEvent me) -> { // clears previous text in box upon focus of textfield
@@ -173,16 +172,6 @@ public class SolverTab extends Tabs {
         });
 
         // inputNumber2 functionality
-        inputNumber2.setOnKeyPressed(ke -> { // pressing enter on the textfield saves the number it gave us
-
-            KeyCode keyCode = ke.getCode();
-            if (keyCode.equals(KeyCode.ENTER)) {
-                setVar2(inputNumber2.getText());
-            }
-
-        });
-
-        // inputNumber2 functionality
         inputNumber2.setOnMouseClicked((MouseEvent me) -> { // clears previous text in box upon focus of textfield
 
             if (inputNumber2.focusedProperty().get()) {
@@ -190,9 +179,27 @@ public class SolverTab extends Tabs {
             }
         });
 
+        // inputNumber3 functionality
+        inputNumber3.setOnMouseClicked((MouseEvent me) -> { // clears previous text in box upon focus of textfield
+
+            if (inputNumber3.focusedProperty().get()) {
+                inputNumber3.setText("");
+            }
+        });
+
+        // Solve the Linear Diophantine Equation!
+        btnSolveLDE.setOnMouseReleased(ke -> {
+            setVar1(inputNumber1.getText());
+            setVar2(inputNumber2.getText());
+            setVar3(inputNumber3.getText());
+            textOutput.setText(MathSolvers.LDEsolnSet(var1,var2,var3));
+        });
+
         nodesOfChoice1.add(inputNumber1);
         nodesOfChoice1.add(inputNumber2);
-        nodesOfChoice1.add(btnCalculateGCD);
+        nodesOfChoice1.add(inputNumber3);
+        nodesOfChoice1.add(btnSolveLDE);
+        nodesOfChoice1.add(textOutput);
 
         return nodesOfChoice1;
     }
@@ -260,6 +267,19 @@ public class SolverTab extends Tabs {
         } catch (NumberFormatException nfe) {
             Main.alert("Please input an integer for number 2!");
             this.var2 = 0;
+        }
+    }
+
+    /**
+     * Mutator method for Var3
+     * @param var3 a String inputted by the user
+     */
+    public void setVar3(String var3) {
+        try {
+            this.var3 = Long.valueOf(var3);
+        } catch (NumberFormatException nfe) {
+            Main.alert("Please input an integer for number 2!");
+            this.var3 = 0;
         }
     }
 

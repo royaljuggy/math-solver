@@ -2,16 +2,15 @@ package sample;
 
 // This class contains functions that solve some mathematical equation (Linear Diophantine equations, etc.)
 public class MathSolvers {
-    
+
     /**
-     * Produces a string indicating the integer solutions of x,y to the equation ax+by=c (for integer constants a,b,c)
-     * @param a a constant of ax+by=c
-     * @param b a constant of ax+by=c
-     * @param c a constant of ax+by=c
-     * @return A string to indicate integer solutions x,y
+     * Produces a single solution to the equation ax+by=c (for integer constants a,b,c)
+     * @param a the constant integer a
+     * @param b the constant integer b
+     * @param c the constant integer c
+     * @return a size-3 long array: a particular solution x,y, and the gcd(a,b)
      */
-    public static String linearDiophantine(long a, long b, long c) {
-        // Temporary values to send into linearDiophantineSolver method
+    public static long[] linearDiophantine(long a, long b, long c) {
         long[] tempX = new long[2];
         long[] tempY = new long[2];
         long[] tempQ = new long[2];
@@ -33,15 +32,58 @@ public class MathSolvers {
         tempR[1] = 0;
 
         long[] solution = certificateOfCorrectness(tempX, tempY, tempQ, tempR);
+        solution[0] *= (c/solution[2]) * (a/Math.abs(a));
+        solution[1] *= (c/solution[2]) * (b/Math.abs(b));
+
+        return solution;
+    }
+
+    /**
+     * Produces a string indicating the integer solutions of x,y to the equation ax+by=c (for integer constants a,b,c)
+     * @param a a constant of ax+by=c
+     * @param b a constant of ax+by=c
+     * @param c a constant of ax+by=c
+     * @return A string to indicate integer solutions x,y
+     */
+    public static String linearDiophantineString(long a, long b, long c) {
+
+        String output = "";
+        long[] solution = linearDiophantine(a,b,c);
 
         if (c % solution[2] == 0) { // We note that integer solutions of (x,y) to the equation ax+by=c exist if and only if gcd(a,b) divides c.
-            output = "One solution to " + a + "x+" + b + "y=" + c + " is x = " +
-                    (solution[0] * c * (a/Math.abs(a))) + " y = " + (solution[1] * c * (b/Math.abs(b)));
+            output = "One solution to " + a + "x+" + b + "y=" + c + " is " +
+                    "x = " + solution[0] + ", " +
+                    "y = " + solution[1];
         } else {
             output = "This particular linear Diophantine equation has no x,y integer solutions.";
         }
 
         return output;
+    }
+
+    /**
+     * Produces a string representing the whole solution set to ax+by=c
+     * @param a the constant integer a
+     * @param b the constant integer b
+     * @param c the constant integer c
+     * @return a string message representing the solution set
+     */
+    public static String LDEsolnSet(long a, long b, long c) {
+        long[] solution = linearDiophantine(a,b,c);
+        long x_0 = solution[0]; // a particular solution
+        long y_0 = solution[1]; // a particular solution
+        long gcd_xy = solution[2];
+
+        if (c % solution[2] == 0) { // We note that integer solutions of (x,y) to the equation ax+by=c exist if and only if gcd(a,b) divides c.
+            return "The set of all solutions to " + a + "x+" + b + "y=" + c + " is\n" +
+                    "x=" + x_0 + "+" + (b/gcd_xy) + "n\n" +
+                    "y=" + y_0 + "+" + (-a/gcd_xy) + "n\n" +
+                    "(where n is any integer)";
+        } else {
+            return "This particular linear Diophantine equation has no x,y integer solutions.";
+        }
+
+
     }
 
     /**
@@ -88,6 +130,13 @@ public class MathSolvers {
             return certificateOfCorrectness(tempX, tempY, tempQ, tempR);
         }
 
+    }
+
+    // isolation testing
+    public static void main(String[] args) {
+        System.out.println(linearDiophantine(10, 5, 20)[1]);
+        System.out.println(linearDiophantineString(10,-5,20));
+        System.out.println(LDEsolnSet(10,5,20));
     }
 
 }
