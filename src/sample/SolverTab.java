@@ -2,10 +2,7 @@ package sample;
 
 import javafx.geometry.Insets;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Tab;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
@@ -18,16 +15,20 @@ public class SolverTab extends Tabs {
     private long var1;
     private long var2;
     private Tab solverTab;
-    private GridPane grid;
+    private GridPane baseGrid;
     private ComboBox functionChooser; // ComboBox to choose which function's nodes to show (only one set of nodes are shown at a time)
     final private int columnIndex = 0;
+    private Button btnChangeFunc;
+    final private double prefWidth = 150;
+    final private double prefHeight = 150;
 
     public SolverTab() {
         var1 = 0;
         var2 = 0;
         solverTab = new Tab("Two Variables");
-        grid = new GridPane();
+        baseGrid = new GridPane();
         functionChooser = new ComboBox<String>();
+        btnChangeFunc = new Button("Change Function/Solver");
         init();
     }
 
@@ -39,9 +40,9 @@ public class SolverTab extends Tabs {
     public void init() {
 
         // Pane node
-        grid.setHgap(10);
-        grid.setVgap(10);
-        grid.setPadding(new Insets(0, 10, 0, 10));
+        baseGrid.setHgap(10);
+        baseGrid.setVgap(10);
+        baseGrid.setPadding(new Insets(0, 10, 0, 10));
 
         // Visual/User interaction objects
         functionChooser.setPromptText("Select a function/solver");
@@ -53,16 +54,22 @@ public class SolverTab extends Tabs {
         // Functionality
         ArrayList<ArrayList<Node>> groupOfFunctionNodes = new ArrayList(); // each element of this ArrayList holds an ArrayList that has the nodes to show for each choice
         groupOfFunctionNodes.add(initChoice0());
+        groupOfFunctionNodes.add(initChoice1());
 
         // Changing what's in the tab based on choice
-        functionChooser.setOnMouseReleased(ke -> { // pressing enter on the textfield saves the number it gave us
-
-            changeVisualNodes(groupOfFunctionNodes.get(functionChooser.getItems().indexOf(functionChooser.getValue())));
+        btnChangeFunc.setOnMouseReleased(ke -> {
+            try {
+                changeVisualNodes(groupOfFunctionNodes.get(functionChooser.getItems().indexOf(functionChooser.getValue())));
+            } catch (IndexOutOfBoundsException e2 ) {
+                Main.alert("Invalid option chosen. Try again.");
+                solverTab.setContent(baseGrid);
+            }
 
         });
 
-        grid.add(functionChooser, columnIndex, 1);
-        solverTab.setContent(grid);
+        baseGrid.add(functionChooser, columnIndex, 1);
+        baseGrid.add(btnChangeFunc, columnIndex+1, 1);
+        solverTab.setContent(baseGrid);
 
     }
 
@@ -74,6 +81,73 @@ public class SolverTab extends Tabs {
     private ArrayList<Node> initChoice0() {
         // Choice 0: Greatest Common Divisor calculator
         ArrayList<Node> nodesOfChoice0 = new ArrayList<>();
+
+        // Visual nodes to add
+        TextField inputNumber1 = new TextField("Input Number 1");
+        TextField inputNumber2 = new TextField("Input Number 2");
+        Button btnCalculateGCD = new Button("Calculate GCD of numbers 1 and 2");
+        TextArea textOutput = new TextArea("Answer here.");
+        textOutput.setEditable(false);
+        textOutput.setPrefSize(prefWidth, prefHeight);
+
+        // inputNumber1 functionality
+        inputNumber1.setOnKeyPressed(ke -> { // pressing enter on the textfield saves the number it gave us
+
+            KeyCode keyCode = ke.getCode();
+            if (keyCode.equals(KeyCode.ENTER)) {
+                setVar1(inputNumber1.getText());
+            }
+
+        });
+
+        // inputNumber1 functionality
+        inputNumber1.setOnMouseClicked((MouseEvent me) -> { // clears previous text in box upon focus of textfield
+
+            if (inputNumber1.focusedProperty().get()) {
+                inputNumber1.setText("");
+            }
+        });
+
+        // inputNumber2 functionality
+        inputNumber2.setOnKeyPressed(ke -> { // pressing enter on the textfield saves the number it gave us
+
+            KeyCode keyCode = ke.getCode();
+            if (keyCode.equals(KeyCode.ENTER)) {
+                setVar2(inputNumber2.getText());
+            }
+
+        });
+
+        // inputNumber2 functionality
+        inputNumber2.setOnMouseClicked((MouseEvent me) -> { // clears previous text in box upon focus of textfield
+
+            if (inputNumber2.focusedProperty().get()) {
+                inputNumber2.setText("");
+            }
+        });
+
+        btnCalculateGCD.setOnMouseReleased(ke -> {
+            setVar1(inputNumber1.getText());
+            setVar2(inputNumber2.getText());
+            textOutput.setText("The GCD of " + var1 + " and " + var2 + " is: " + MathFunctions.gcd(var1, var2));
+        });
+
+        nodesOfChoice0.add(inputNumber1);
+        nodesOfChoice0.add(inputNumber2);
+        nodesOfChoice0.add(btnCalculateGCD);
+        nodesOfChoice0.add(textOutput);
+
+        return nodesOfChoice0;
+    }
+
+    /**
+     * Initializes the nodes that make up the visuals of choice0
+     * @return a list of Nodes to show in this Tab
+     */
+
+    private ArrayList<Node> initChoice1() {
+        // Choice 1: Linear Diophantine Equation Solver
+        ArrayList<Node> nodesOfChoice1 = new ArrayList<>();
 
         // Visual nodes to add
         TextField inputNumber1 = new TextField("Input Number 1");
@@ -116,11 +190,11 @@ public class SolverTab extends Tabs {
             }
         });
 
-        nodesOfChoice0.add(inputNumber1);
-        nodesOfChoice0.add(inputNumber2);
-        nodesOfChoice0.add(btnCalculateGCD);
+        nodesOfChoice1.add(inputNumber1);
+        nodesOfChoice1.add(inputNumber2);
+        nodesOfChoice1.add(btnCalculateGCD);
 
-        return nodesOfChoice0;
+        return nodesOfChoice1;
     }
 
     /**
@@ -133,9 +207,10 @@ public class SolverTab extends Tabs {
         newGrid.setVgap(10);
         newGrid.setPadding(new Insets(0, 10, 0, 10));
         newGrid.add(functionChooser, columnIndex, 1);
+        newGrid.add(btnChangeFunc, columnIndex+1, 1);
 
         for (int x = 0; x < nodes.size(); x++) {
-            newGrid.add(nodes.get(x), columnIndex, x+1);
+            newGrid.add(nodes.get(x), columnIndex, x+2);
         }
 
         // Sets the new visuals to the Tab
